@@ -1,0 +1,18 @@
+#map {
+  height: 70vh;
+}
+
+#externalfile {
+  width: 220px;
+}
+
+.ui-resizable-handle {
+  background: linear-gradient(
+    to bottom,
+    white,
+    white 50%,
+    lightgray 50%,
+    lightgray
+    );
+  background-size: 100% 20px;
+}

@@ -1,0 +1,83 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name='author', content='Jan Speckamp (428367), Eric Thieme-Garmann (429603)')
+    title Web-App - Geosoftware I, SoSe 2017, Aufgabe 7
+    // Leaflet stuff
+    link(rel='stylesheet', href='https://unpkg.com/leaflet@1.0.3/dist/leaflet.css')
+    script(src='https://unpkg.com/leaflet@1.0.3/dist/leaflet.js')
+    // Leaflet draw plugin
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.9/leaflet.draw.css')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.9/leaflet.draw.js')
+    // painless AJAXing
+    script(src='https://code.jquery.com/jquery-3.2.1.min.js')
+    // Bootstrap
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
+    // jQuery UI for resizing stuff
+    link(rel='stylesheet', href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js')
+    // better have a bit of style
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    // Leaflet routing Engine
+    link(rel='stylesheet', href='/stylesheets/leaflet-routing-machine.css')
+    script(src='/javascripts/leaflet-routing-machine.js')
+    // Leaflet Reverse Lookup
+    link(rel='stylesheet', href='/stylesheets/Control.Geocoder.css')
+    script(src='/javascripts/Control.Geocoder.js')
+
+    // our app code
+    script(src='/javascripts/index.js')
+  body
+    .container-fluid
+      .col-md-12
+        h1 Web-App
+        p Geosoftware I, SoSe 2017, Aufgabe 7
+        ul.nav.nav-tabs
+          li(role='presentation')
+            a(href='/') Start
+          li.active(role='presentation')
+            a(href='karte') Karte
+          li(role='presentation')
+            a(href='impressum') Impressum
+        br
+      #content.col-md-8
+        // Leaflet map div
+        #map
+      #menu.col-md-4
+        h2 Karten-Tools
+        // form, on submit event showExternalFile() is called and the default action (i.e. submitting the form) prevented
+        form.form-inline(onsubmit='event.preventDefault(); showExternalFile();')
+          input#externalfile.form-control(type='text', name='externalfile', placeholder='URL zu ext. GeoJSON-Datei')
+          input.btn.btn-default(type='submit', value='Auf Karte laden')
+        br
+        button.btn.btn-default(onclick='showLocation()') Meine Position anzeigen
+        br
+        br
+        button.btn.btn-default(onclick='exportDrawing()') Zeichnung herunterladen
+        br
+        br
+        form.form-inline(id='saveFormGeo' action='/api/save/geometry/' method='POST')
+          input#name.form-control(type='text', name='name', placeholder='Name der Geometrie')
+          input.btn.btn-default(type='submit', value='Geometrie in Datenbank speichern')
+        br
+        form.form-inline(id='loadFormGeo' action='/api/load/geometry/' method='GET')
+          input#name.form-control(type='text', name='loadname', placeholder='Name der Geometrie')
+          input.btn.btn-default(type='submit', value='Geometrie aus Datenbank laden')
+        br
+        form.form-inline(id='saveFormRoutes' action='/api/save/route/' method='POST')
+          input#name.form-control(type='text', name='nameroute', placeholder='Name der Route')
+          input.btn.btn-default(type='submit', value='Route in Datenbank speichern')
+        br
+        form.form-inline(id='loadFormRoutes' name='loadFormRoutes' action='/api/load/route/' method='GET')
+          input.form-control(type='text', name='loadname', id='loadname', value=loadRouteName, placeholder='Name der Route')
+          input.btn.btn-default(type='submit', id='loadRoutes', value='Route aus Datenbank laden')
+        br
+        form.form-inline(id='loadFormRoutesVisualization' action='/api/load/route/' method='GET')
+          input#name.form-control(type='text', name='loadname', placeholder='Name der Route')
+          input.btn.btn-default(type='submit', value='Visualisiere Route')
+        br
+        button.btn.btn-default(onclick='clearVisualizationLayer()') Lösche alle visualisierten Routen
+        br

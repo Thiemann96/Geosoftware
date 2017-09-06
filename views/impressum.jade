@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name='author', content='Jan Speckamp (428367), Eric Thieme-Garmann (429603)')
+    title Web-App - Geosoftware I, SoSe 2017, Aufgabe 7
+    // Bootstrap
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
+    // better have a bit of style
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    .container-fluid
+      .col-md-12
+        h1 Web-App
+        p Geosoftware I, SoSe 2017, Aufgabe 7
+        ul.nav.nav-tabs
+          li(role='presentation')
+            a(href='/') Start
+          li(role='presentation')
+            a(href='karte') Karte
+          li.active(role='presentation')
+            a(href='impressum') Impressum
+      .col-md-12
+        h2 Impressum
+        p Angaben nach §5 TMG:
