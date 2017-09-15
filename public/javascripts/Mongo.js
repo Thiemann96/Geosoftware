@@ -88,6 +88,7 @@ $(document).ready(function() {
       inputRoute.remove();
       return false;
     }
+
   });
 
     $('#saveFormRoutes2').submit(function(e) {

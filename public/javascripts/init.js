@@ -73,6 +73,29 @@ function initMap() {
     });
     routeControl.addTo(map);
 
+    $(document).ready(function(){
+            $("#rcShow").hide();
+    });
+
+    $(document).ready(function(){
+        $("#rcHide").click(function(){
+            $("#rcHide").hide();
+            routeControl.remove();
+            $("#rcShow").show();
+
+
+        });
+    });
+
+    $(document).ready(function(){
+        $("#rcShow").click(function(){
+            $("#rcShow").hide();
+            routeControl.addTo(map);
+            $("#rcHide").show();
+        });
+    });
+
+
     // Code taken from http://www.liedman.net/leaflet-routing-machine/tutorials/interaction/
     map.on('click', function(e) {
         if (routeSwitch){

@@ -47,7 +47,9 @@ html
             a(href='karte') Karte
           li(role='presentation')
             a(href='impressum') Impressum
-
+        br
+        input.btn.btn-default(id='rcHide', type='submit', value='Hide route control')
+        input.btn.btn-default(id='rcShow', type='submit', value='Show route control')
       #content.col-md-8
         // Leaflet map div
         #map
@@ -80,8 +82,8 @@ html
         div
           h2 Geben sie hier die Etappe ein die sie hinzufügen möchten
           form.form-inline(id='saveFormRoutes2', name="addEtappe",method="post", action="/api/save/routes/")
-            input#inputEtappenName(type="text", placeholder="Name", name="Name")
-            input#inputEtappenStart(type="text", placeholder="Start", name="Start")
-            input#inputEtappenEnde(type="text",placeholder="Ende",name="Ende")
-            input#inputOrtWebsite(type="text",placeholder="Ort",name="Ort")
-            button#btnSubmit(type="submit") submit
+            input#inputEtappenName.form-control(type="text", placeholder="Name", name="Name")
+            input#inputEtappenStart.form-control(type="text", placeholder="Start", name="Start")
+            input#inputEtappenEnde.form-control(type="text",placeholder="Ende",name="Ende")
+            input#inputOrtWebsite.form-control(type="text",placeholder="Ort",name="Ort")
+            button#btnSubmit.btn.btn-default(type="submit") Etappe speichern

@@ -70,3 +70,10 @@ function createButton(label, container) {
     btn.innerHTML = label;
     return btn;
 }
+
+
+/*
+
+        input.btn.btn-default(id='rcHide', type='submit', value='Hide route control')
+
+        input.btn.btn-default(id='rcShow', type='submit', value='Show route control')*/
