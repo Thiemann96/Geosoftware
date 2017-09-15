@@ -4,8 +4,8 @@ html
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    meta(name='author', content='Jan Speckamp (428367), Eric Thieme-Garmann (429603)')
-    title Web-App - Geosoftware I, SoSe 2017, Aufgabe 7
+    meta(name='author', content= 'Eric Thieme-Garmann (429603)')
+    title Web-App - Geosoftware I, SoSe 2017, Abschlussabgabe
     // Leaflet stuff
     link(rel='stylesheet', href='https://unpkg.com/leaflet@1.0.3/dist/leaflet.css')
     script(src='https://unpkg.com/leaflet@1.0.3/dist/leaflet.js')
@@ -23,18 +23,23 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     // Leaflet routing Engine
     link(rel='stylesheet', href='/stylesheets/leaflet-routing-machine.css')
-    script(src='/javascripts/leaflet-routing-machine.js')
+    script(src='/javascripts/imported/leaflet-routing-machine.js')
     // Leaflet Reverse Lookup
     link(rel='stylesheet', href='/stylesheets/Control.Geocoder.css')
-    script(src='/javascripts/Control.Geocoder.js')
+    script(src='/javascripts/imported/Control.Geocoder.js')
 
     // our app code
-    script(src='/javascripts/index.js')
+    script(src='/javascripts/init.js')
+    script(src='/javascripts/Mongo.js')
+    script(src='/javascripts/showLocation.js')
+    script(src='/javascripts/loadExternalFile.js')
+    script(src='/javascripts/routing.js')
+    script(src='/javascripts/exportDrawing.js')
   body
     .container-fluid
       .col-md-12
         h1 Web-App
-        p Geosoftware I, SoSe 2017, Aufgabe 7
+        p Geosoftware I, SoSe 2017, Abschlussabgabe
         ul.nav.nav-tabs
           li(role='presentation')
             a(href='/') Start

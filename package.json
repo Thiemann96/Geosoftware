@@ -13,7 +13,7 @@
     "jade": "~1.11.0",
     "leaflet-control-geocoder": "^1.5.4",
     "leaflet-routing-machine": "^3.2.5",
-    "monk": "^4.0.0",ss
+    "monk": "^4.0.0",
     "morgan": "~1.8.1",
     "serve-favicon": "~2.4.2"
   }
