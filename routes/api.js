@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var monk = require('monk');
-var db = monk('localhost:27017/aufgabe7');
+var db = monk('localhost:27017/abschluss');
 
 /* POST Geojson to be saved to database. */
 router.post('/save/geometry/', function(req, res, next) {

@@ -53,17 +53,6 @@ html
         #map
       #menu.col-md-4
         h2 Karten-Tools
-        // form, on submit event showExternalFile() is called and the default action (i.e. submitting the form) prevented
-        form.form-inline(onsubmit='event.preventDefault(); showExternalFile();')
-          input#externalfile.form-control(type='text', name='externalfile', placeholder='URL zu ext. GeoJSON-Datei')
-          input.btn.btn-default(type='submit', value='Auf Karte laden')
-        br
-        button.btn.btn-default(onclick='showLocation()') Meine Position anzeigen
-        br
-        br
-        button.btn.btn-default(onclick='exportDrawing()') Zeichnung herunterladen
-        br
-        br
         form.form-inline(id='saveFormGeo' action='/api/save/geometry/' method='POST')
           input#name.form-control(type='text', name='name', placeholder='Name der Geometrie')
           input.btn.btn-default(type='submit', value='Geometrie in Datenbank speichern')
@@ -78,11 +67,11 @@ html
         br
         form.form-inline(id='loadFormRoutes' name='loadFormRoutes' action='/api/load/route/' method='GET')
           input.form-control(type='text', name='loadname', id='loadname', value=loadRouteName, placeholder='Name der Route')
-          input.btn.btn-default(type='submit', id='loadRoutes', value='Route aus Datenbank laden')
+          input.btn.btn-default(type='submit', id='loadRoutes', value='Route aus Datenbank laden & anzeigen')
+        //br
+        //form.form-inline(id='loadFormRoutesVisualization' action='/api/load/route/' method='GET')
+        //  input#name.form-control(type='text', name='loadname', placeholder='Name der Route')
+        //  input.btn.btn-default(type='submit', value='Visualisiere Route')
         br
-        form.form-inline(id='loadFormRoutesVisualization' action='/api/load/route/' method='GET')
-          input#name.form-control(type='text', name='loadname', placeholder='Name der Route')
-          input.btn.btn-default(type='submit', value='Visualisiere Route')
-        br
-        button.btn.btn-default(onclick='clearVisualizationLayer()') Lösche alle visualisierten Routen
+        button.btn.btn-default(onclick='clearVisualizationLayer()') Lösche alle angezeigten Routen
         br

@@ -31,6 +31,9 @@ $(document).ready(function() {
     inputGeo.remove();
     return false;
   });
+
+
+
   // submit handler for forms used to load from Database
   $('#loadFormGeo').submit(function(e) {
     // Prevent default html form handling
@@ -43,7 +46,7 @@ $(document).ready(function() {
       // catch custom response code.
       statusCode: {
         404: function() {
-          alert("Geometry with the name '" + that.elements.loadname.value + "' is not present in the Database.");
+          console.log("Geometry with the name '" + that.elements.loadname.value + "' is not present in the Database.");
         }
       },
       data: '',
@@ -56,7 +59,7 @@ $(document).ready(function() {
         console.log("success");
          // Add Geometry to Map
          L.geoJSON(JSON.parse(res[0].geometry)).addTo(map);    
-         alert("Geometry '" + that.elements.loadname.value + "' successfully loaded.");
+         console.log("Geometry '" + that.elements.loadname.value + "' successfully loaded.");
       }
     });
     return false;
@@ -108,14 +111,16 @@ $(document).ready(function() {
       },
       success: function(res) {
         var route = JSON.parse(res[0].route);
-        routeControl.setWaypoints(route.waypoints).addTo(map); 
-        console.log("Route '" + that.elements.loadname.value + "' successfully loaded.");
+        //routeControl.setWaypoints(route.waypoints).addTo(map);
+          L.geoJSON(RouteToGeoJSON(route.route)).addTo(visualizationLayers);
+
+          console.log("Route '" + that.elements.loadname.value + "' successfully loaded.");
       }
     });
     return false;
   });
   
-  // submit handler for forms used to load from Database
+/*  // submit handler for forms used to load from Database
   $('#loadFormRoutesVisualization').submit(function(e) {
     // Prevent default html form handling
     e.preventDefault();
@@ -143,7 +148,7 @@ $(document).ready(function() {
       }
     });
     return false;
-  });
+  });*/
   
   if ((document.getElementById('loadname')).value != ""){
     document.getElementById('loadRoutes').click(); 

@@ -70,6 +70,3 @@ function createButton(label, container) {
     btn.innerHTML = label;
     return btn;
 }
-function clearVisualizationLayer() {
-    visualizationLayers.clearLayers();
-    }
