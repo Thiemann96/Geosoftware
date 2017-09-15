@@ -14,7 +14,7 @@ var map, layercontrol, editableLayers, visualizationLayers, drawControl, routeCo
  */
 
 var ParkplatzIcon = L.icon({
-    iconUrl: '/Icons/Parkplatz.jpg',
+    iconUrl: '/Icons/Parkplatz.png',
 
     iconSize:     [35, 35], // size of the icon
     iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
@@ -23,7 +23,7 @@ var ParkplatzIcon = L.icon({
 });
 
 var ZuschauerIcon = L.icon({
-    iconUrl: '/Icons/zuschauer.png',
+    iconUrl: '/Icons/Zuschauer.png',
 
     iconSize:     [35, 35], // size of the icon
     iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
