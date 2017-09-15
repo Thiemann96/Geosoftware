@@ -47,7 +47,7 @@ html
             a(href='karte') Karte
           li(role='presentation')
             a(href='impressum') Impressum
-        br
+
       #content.col-md-8
         // Leaflet map div
         #map
@@ -75,3 +75,13 @@ html
         br
         button.btn.btn-default(onclick='clearVisualizationLayer()') Lösche alle angezeigten Routen
         br
+        br
+
+        div
+          h2 Geben sie hier die Etappe ein die sie hinzufügen möchten
+          form.form-inline(id='saveFormRoutes2', name="addEtappe",method="post", action="/api/save/routes/")
+            input#inputEtappenName(type="text", placeholder="Name", name="Name")
+            input#inputEtappenStart(type="text", placeholder="Start", name="Start")
+            input#inputEtappenEnde(type="text",placeholder="Ende",name="Ende")
+            input#inputOrtWebsite(type="text",placeholder="Ort",name="Ort")
+            button#btnSubmit(type="submit") submit

@@ -90,4 +90,64 @@ router.get('/load/route/:name/', function(req, res, next) {
     };
   });
 });
+
+
+
+/* POST Geojson to be saved to database. */
+router.post('/save/routes/', function(req, res, next) {
+
+    // Set collection
+    var jsoncollection = db.get('jsoncollection');
+
+    // Submit to the DB
+    jsoncollection.insert({
+        "Etappenname" : req.body.Name,
+        "Start":req.body.Start,
+        "Ende":req.body.Ende,
+        "Ort":req.body.Ort,
+        "route" : req.body.route
+    }, function (err, doc) {
+        if (err) {
+            res.status(500).end("Failed to write Route to Database");
+        }
+        else {
+            res.status(200).end("Successfully written Route to Database.");
+        }
+    });
+});
 module.exports = router;
+
+
+
+/*/!* POST to Add User Service *!/
+router.post('/save/route/', function(req, res) {
+
+    // Set our internal DB variable
+    var db = req.db;
+
+    // Get our form values. These rely on the "name" attributes
+    var Name = req.body.Name;
+    var Start = req.body.Start;
+    var Ende = req.body.Ende;
+    var Ort = req.body.Ort;
+
+    // Set our collection
+    var jsoncollection = db.get('jsoncollection');
+
+    // Submit to the DB
+    jsoncollection.insert({
+        "Name" : Name,
+        "Start" : Start,
+        "Ende": Ende,
+        "Ort": Ort
+    }, function (err, doc) {
+        if (err) {
+            // If it failed, return error
+            res.send("There was a problem adding the information to the database.");
+        }
+        else {
+            // And forward to success page
+            res.status(200).end("Successfully written Route to Database.");
+        }
+    });
+});*/

@@ -89,6 +89,31 @@ $(document).ready(function() {
       return false;
     }
   });
+
+    $('#saveFormRoutes2').submit(function(e) {
+        e.preventDefault();
+        if (currentRoute){
+            // Append hidden field with actual GeoJSON structure
+            var inputRoute = $("<input type='hidden' name='route' value='" + JSON.stringify(currentRoute) + "'>");
+            $(this).append(inputRoute);
+            var that = this;
+
+            // submit via ajax
+            $.ajax({
+                data: $(that).serialize(),
+                type: $(that).attr('method'),
+                url:  $(that).attr('action'),
+                error: function(xhr, status, err) {
+                    console.log("Error while saving Route to Database");
+                },
+                success: function(res) {
+                    console.log("Route with the name '" + that.elements.name.value + "' saved to Database.");
+                }
+            });
+            inputRoute.remove();
+            return false;
+        }
+    });
   // submit handler for forms used to load from Database
   $('#loadFormRoutes').submit(function(e) {
     // Prevent default html form handling

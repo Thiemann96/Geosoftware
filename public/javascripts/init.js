@@ -41,7 +41,7 @@ function initMap() {
     routeSwitch = true;
     map = L.map('map', {
         center: [40.416775, -3.703790], // Centre of Spain
-        zoom: 6,
+        zoom: 12,
         layers: [Topographic, extras],
         zoomControl: false
     });
