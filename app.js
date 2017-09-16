@@ -1,4 +1,4 @@
-  var express = require('express');
+var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var api = require('./routes/api');
 
+var GeoSearchControl = require('leaflet-geosearch');
+var OpenStreetMapProvider = require('leaflet-geosearch');
 var app = express();
 
 // view engine setup

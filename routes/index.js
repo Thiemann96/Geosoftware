@@ -16,6 +16,17 @@ router.get('/karte/:id/', function(req, res, next) {
   res.render('karte', {loadRouteName: req.params.id});
 });
 
+/* GET Zuschauerplatze page. */
+router.get('/zuschauerplaetze', function(req, res, next) {
+    res.render('zuschauerplaetze', {});
+});
+
+/* GET Parkplatze page. */
+router.get('/parkplaetze', function(req, res, next) {
+    res.render('parkplaetze', {});
+});
+
+
 /* GET Impressum page. */
 router.get('/impressum', function(req, res, next) {
   res.render('impressum', {});

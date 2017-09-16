@@ -29,12 +29,14 @@ html
     script(src='/javascripts/imported/Control.Geocoder.js')
 
     // our app code
-    script(src='/javascripts/init.js')
+    script(src='/javascripts/initmain.js')
     script(src='/javascripts/Mongo.js')
     script(src='/javascripts/showLocation.js')
     script(src='/javascripts/loadExternalFile.js')
     script(src='/javascripts/routing.js')
     script(src='/javascripts/exportDrawing.js')
+
+
   body
     .container-fluid
       .col-md-12
@@ -46,13 +48,19 @@ html
           li.active(role='presentation')
             a(href='karte') Karte
           li(role='presentation')
+            a(href='parkplaetze') Parkplätze
+          li(role='presentation')
+            a(href='zuschauerplaetze') Zuschauerplätze
+          li(role='presentation')
             a(href='impressum') Impressum
+
         br
         input.btn.btn-default(id='rcHide', type='submit', value='Hide route control')
         input.btn.btn-default(id='rcShow', type='submit', value='Show route control')
       #content.col-md-8
         // Leaflet map div
         #map
+      script
       #menu.col-md-4
         h2 Karten-Tools
         form.form-inline(id='saveFormGeo' action='/api/save/geometry/' method='POST')
@@ -86,4 +94,4 @@ html
             input#inputEtappenStart.form-control(type="text", placeholder="Start", name="Start")
             input#inputEtappenEnde.form-control(type="text",placeholder="Ende",name="Ende")
             input#inputOrtWebsite.form-control(type="text",placeholder="Ort",name="Ort")
-            button#btnSubmit.btn.btn-default(type="submit") Etappe speichern
+            button#btnSubmit.btn.btn-default(type="submit", value='Etappe speichern')'Etappe speichern'

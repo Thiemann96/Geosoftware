@@ -22,27 +22,19 @@ var ParkplatzIcon = L.icon({
 
 });
 
-var ZuschauerIcon = L.icon({
-    iconUrl: '/Icons/Zuschauer.png',
-
-    iconSize:     [35, 35], // size of the icon
-    iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
-    popupAnchor:  [-4, -76] // point from which the popup should open relative to the iconAnchor
-
-});
 
 function initMap() {
 
     var extras = L.layerGroup([]);
 
-    var Topographic = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {id: 'MapID', attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'}),
+    var Normal = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}\'', {id: 'MapID', attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'}),
         streets   = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {id: 'MapID', attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
 
     routeSwitch = true;
     map = L.map('map', {
         center: [40.416775, -3.703790], // Centre of Spain
         zoom: 12,
-        layers: [Topographic, extras],
+        layers: [Normal, extras],
         zoomControl: false
     });
     L.control.zoom({
@@ -50,7 +42,7 @@ function initMap() {
     }).addTo(map);
 
     var baseMaps = {
-        "<span style='color: brown'>Topographic Map</span>": Topographic,
+        "<span style='color: brown'>Normal</span>": Normal,
         "Open-Street Map": streets
     };
 
@@ -150,6 +142,9 @@ function initMap() {
     map.addControl(drawControl);
 
 
+
+
+
     // when drawing is done, save drawn objects to the drawing layer
     map.on(L.Draw.Event.CREATED, function (e) {
         var type = e.layerType,
@@ -165,33 +160,25 @@ function initMap() {
         routeSwitch = true;
     });
 
+
+
 }
-
-
-// Setting up my custom toolbar with the usual draw options and different markers for an object , a parking lot and Zuschauerplätze
-//https://github.com/Leaflet/Leaflet.draw/issues/265
 L.DrawToolbar.include({
     getModeHandlers: function(map) {
         return [
             {
-                enabled: this.options.marker,
-                handler: new L.Draw.Marker(map, this.options.marker),
-                title: L.drawLocal.draw.toolbar.buttons.marker
-            },
-            {
                 enabled: true,
                 handler: new L.Draw.Marker(map, {icon: ParkplatzIcon}),
                 title: 'Parkplatz erstellen'
-            },
-            {
-                enabled: true,
-                handler: new L.Draw.Marker(map, {icon: ZuschauerIcon}),
-                title: 'Zuschauerplatz erstellen'
-            },
+            }
 
         ];
     }
 });
+
+// Setting up my custom toolbar with the usual draw options and different markers for an object , a parking lot and Zuschauerplätze
+//https://github.com/Leaflet/Leaflet.draw/issues/265
+
 
 /**
  * add resizing capability (curtesy of several StackExchange users)
@@ -228,7 +215,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     initUI();
 });
 function clearVisualizationLayer() {
-    console.log("Wurde ausgeführt");
+
     visualizationLayers.clearLayers();
 
 }

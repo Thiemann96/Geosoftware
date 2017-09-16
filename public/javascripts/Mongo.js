@@ -108,7 +108,7 @@ $(document).ready(function() {
                     console.log("Error while saving Route to Database");
                 },
                 success: function(res) {
-                    console.log("Route with the name '" + that.elements.name.value + "' saved to Database.");
+                    console.log("Route with the name '" + that.elements.Name.value+"' saved to Database.");
                 }
             });
             inputRoute.remove();
