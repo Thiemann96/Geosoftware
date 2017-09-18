@@ -60,11 +60,12 @@ html
                 #map
             #menu.col-md-4
                 h2 Karten-Tools
-                form.form-inline(id='saveFormGeo' action='/api/save/geometry/' method='POST')
-                    input#name.form-control(type='text', name='name', placeholder='Name der Geometrie')
-                    input.btn.btn-default(type='submit', value='Geometrie in Datenbank speichern')
+                p#1
+                p#2
+                p#3
+                p#4
                 br
-                form.form-inline(id='loadFormGeo' action='/api/load/geometry/' method='GET')
+                form.form-inline(id='loadMarker' action='/api/load/marker/' method='GET')
                     input#name.form-control(type='text', name='loadname', placeholder='Name der Geometrie')
                     input.btn.btn-default(type='submit', value='Geometrie aus Datenbank laden')
                 br

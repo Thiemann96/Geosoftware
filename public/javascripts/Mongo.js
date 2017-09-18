@@ -8,30 +8,6 @@
 // Overwrite HTML Form handlers once document is created.
 $(document).ready(function() {
 
-  // overwrite submit handler for form used to save to Database
-  $('#saveFormGeo').submit(function(e) {
-    e.preventDefault();
-    // Append hidden field with actual GeoJSON structure
-    var inputGeo = $('<input type="hidden" name="geometry" value=' + JSON.stringify(editableLayers.toGeoJSON())+ '>');
-    $(this).append(inputGeo);
-    var that = this;
-    // submit via ajax
-    $.ajax({
-      data: $(that).serialize(),
-      type: $(that).attr('method'),
-      url:  $(that).attr('action'),
-      error: function(xhr, status, err) {
-        console.log("Error while saving Geometry to Database");
-        alert("Error while saving Geometry to Database");
-      },
-      success: function(res) {
-         console.log("Geometry with the name '" + that.elements.name.value + "' saved to Database.");
-      }
-    });
-    inputGeo.remove();
-    return false;
-  });
-
 
 
   // submit handler for forms used to load from Database
@@ -64,6 +40,48 @@ $(document).ready(function() {
     });
     return false;
   });
+
+
+    $('#loadMarker').submit(function(e) {
+        // Prevent default html form handling
+        e.preventDefault();
+
+        var that = this;
+        // submit via ajax
+        $.ajax({
+            // catch custom response code.
+            statusCode: {
+                404: function() {
+                    console.log("Geometry with the name '" + that.elements.Name.value + "' is not present in the Database.");
+                }
+            },
+            data: '',
+            type: $(that).attr('method'),
+            // Dynamically create Request URL by appending requested name to /api prefix
+            url:  $(that).attr('action') + that.elements.name.value,
+            error: function(xhr, status, err) {
+            },
+            success: function(res) {
+                var popupcontent='<div class="form-group">' +'<label class="control-label col-sm-12 "><strong>Name: </strong></label>' +
+                    '<label>'+ res[0].name + '</label>' + '</div>'
+
+
+                    console.log("success");
+                // Add Geometry to Map
+                L.geoJSON(JSON.parse(res[0].geometry)).addTo(map);
+                console.dir(res[0]);
+                L.popup({maxWidth:1000})
+                    .setContent(popupcontent)
+                    .setLatLng((JSON.parse(res[0].geometry)).features[0].geometry.coordinates)
+                    .openOn(map);
+
+                console.log("Geometry '" + that.elements.name.value + "' successfully loaded.");
+            }
+        });
+        return false;
+    });
+
+
     // overwrite submit handler for form used to save to Database
   $('#saveFormRoutes').submit(function(e) {
     e.preventDefault();

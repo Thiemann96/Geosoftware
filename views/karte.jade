@@ -62,10 +62,7 @@ html
         #map
       script
       #menu.col-md-4
-        h2 Karten-Tools
-        form.form-inline(id='saveFormGeo' action='/api/save/geometry/' method='POST')
-          input#name.form-control(type='text', name='name', placeholder='Name der Geometrie')
-          input.btn.btn-default(type='submit', value='Geometrie in Datenbank speichern')
+        h2 Karten-Tool
         br
         form.form-inline(id='loadFormGeo' action='/api/load/geometry/' method='GET')
           input#name.form-control(type='text', name='loadname', placeholder='Name der Geometrie')
@@ -76,7 +73,7 @@ html
           input.btn.btn-default(type='submit', value='Route in Datenbank speichern')
         br
         form.form-inline(id='loadFormRoutes' name='loadFormRoutes' action='/api/load/route/' method='GET')
-          input.form-control(type='text', name='loadname', id='loadname', value=loadRouteName, placeholder='Name der Route')
+          input.form-control(type='text', name='loadname', id='loadname', value='loadRouteName', placeholder='Name der Route')
           input.btn.btn-default(type='submit', id='loadRoutes', value='Route aus Datenbank laden & anzeigen')
         //br
         //form.form-inline(id='loadFormRoutesVisualization' action='/api/load/route/' method='GET')

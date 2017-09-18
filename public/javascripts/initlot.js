@@ -13,15 +13,6 @@ var map, layercontrol, editableLayers, visualizationLayers, drawControl, routeCo
  * parking lots and the stands
  */
 
-var ParkplatzIcon = L.icon({
-    iconUrl: '/Icons/Parkplatz.png',
-
-    iconSize:     [35, 35], // size of the icon
-    iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
-    popupAnchor:  [-4, -76] // point from which the popup should open relative to the iconAnchor
-
-});
-
 
 function initMap() {
 
@@ -94,6 +85,7 @@ function initMap() {
             var container = L.DomUtil.create('div'),
                 startBtn = createButton('Start from this location', container),
                 destBtn = createButton('Go to this location', container);
+            console.log(e.latlng);
             L.popup()
                 .setContent(container)
                 .setLatLng(e.latlng)
@@ -142,19 +134,82 @@ function initMap() {
     map.addControl(drawControl);
 
 
-
-
-
     // when drawing is done, save drawn objects to the drawing layer
     map.on(L.Draw.Event.CREATED, function (e) {
+        console.log("Start");
+        var popupContent = '<form class="meineForm" id="saveMarker" action="/api/save/marker/" method="POST">'+
+            '<div class="form-group">'+
+            '<label class="control-label col-sm-5"><strong>Name: </strong></label>'+
+            '<input type="text" placeholder="Required" id="name" name="name" class="form-control"/>'+
+            '</div>'+
+            '<div class="form-group">'+
+            '<label class="control-label col-sm-5"><strong>Art: </strong></label>'+
+            '<select class="form-control" id="art" name="art">'+
+            '<option value="parkplatz">Parkplatz</option>'+
+            '<option value="zuschauer">Zuschauerplatz</option>'+
+            '</select>'+
+            '</div>'+
+            '<div class="form-group">'+
+            '<label class="control-label col-sm-5"><strong>Kapazität: </strong></label>'+
+            '<input type="number" min="0" class="form-control" id="cap" name="cap">'+
+            '</div>'+
+            //...
+            '<div class="form-group">'+
+            '<label class="control-label col-sm-5"><strong>Description: </strong></label>'+
+            '<textarea class="form-control" rows="6" id="info" name="info">...</textarea>'+
+            '</div>'+
+            '<div class="form-group">'+
+            '<div style="text-align:center;" class="col-xs-4"><button type="submit" value="speichern" class="btn btn-primary trigger-submit">Marker speichern</button></div>'+              '</div>'+
+            '</form>';
+
+
         var type = e.layerType,
             layer = e.layer;
         editableLayers.addLayer(layer);
+        console.log(layer.getLatLng());
+        L.popup({maxWidth:1000})
+            .setContent(popupContent)
+            .setLatLng(layer.getLatLng())
+            .openOn(map);
+        console.log("Ende");
+
+        $('#saveMarker').submit(function(e) {
+            e.preventDefault();
+            if (true){
+                var reverse = editableLayers.toGeoJSON();
+                console.dir(reverse);
+                var tmp1=reverse.features[0].geometry.coordinates[0];
+                reverse.features[0].geometry.coordinates[0]=reverse.features[0].geometry.coordinates[1];
+                reverse.features[0].geometry.coordinates[1]=tmp1;
+                // Append hidden field with actual GeoJSON structure
+                var inputGeo = $('<input type="hidden" name="geometry" value=' + JSON.stringify(reverse)+ '>');
+                $(this).append(inputGeo);
+                var that = this;
+
+                // submit via ajax
+                $.ajax({
+                    data: $(that).serialize(),
+                    type: $(that).attr('method'),
+                    url:  $(that).attr('action'),
+                    error: function(xhr, status, err) {
+                        console.log("Error while saving Route to Database");
+                    },
+                    success: function(res) {
+                        console.log("Route with the name '" + that.elements.name.value+"' saved to Database.");
+                    }
+                });
+                inputGeo.remove();
+                return false;
+            }
+        });
+
+
     });
 
     map.on(L.Draw.Event.DRAWSTART, function (e) {
         map.closePopup();
         routeSwitch = false;
+
     });
     map.on(L.Draw.Event.DRAWSTOP, function (e) {
         routeSwitch = true;
@@ -168,10 +223,9 @@ L.DrawToolbar.include({
         return [
             {
                 enabled: true,
-                handler: new L.Draw.Marker(map, {icon: ParkplatzIcon}),
-                title: 'Parkplatz erstellen'
+                handler: new L.Draw.Marker(map),
+                title: 'Objekt erstellen'
             }
-
         ];
     }
 });
@@ -217,5 +271,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 function clearVisualizationLayer() {
 
     visualizationLayers.clearLayers();
+
+}
+
+function createForm() {
+
+    var btn = document.createElement("BUTTON");        // Create a <button> element
+    var t = document.createTextNode("CLICK ME");       // Create a text node
+    //document.body.appendChild(btn);                    // Append <button> to <body>
 
 }
