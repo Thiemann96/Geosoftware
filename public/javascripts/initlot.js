@@ -60,6 +60,9 @@ function initMap() {
             $("#rcShow").hide();
     });
 
+    /** Function in order for the hide & show Button for the routeControl
+     * to be properly displayed
+     */
     $(document).ready(function(){
         $("#rcHide").click(function(){
             $("#rcHide").hide();
@@ -69,7 +72,9 @@ function initMap() {
 
         });
     });
-
+    /** Function in order for the hide & show Button for the routeControl
+     * to be properly displayed
+     */
     $(document).ready(function(){
         $("#rcShow").click(function(){
             $("#rcShow").hide();
@@ -80,7 +85,8 @@ function initMap() {
 
 
     // Code taken from http://www.liedman.net/leaflet-routing-machine/tutorials/interaction/
-    map.on('click', function(e) {
+    // slightly changed in order to only show up when a double click is performed
+    map.on('dblclick', function(e) {
         if (routeSwitch){
             var container = L.DomUtil.create('div'),
                 startBtn = createButton('Start from this location', container),
@@ -134,9 +140,12 @@ function initMap() {
     map.addControl(drawControl);
 
 
-    // when drawing is done, save drawn objects to the drawing layer
+    /** When an object ( e.g. marker ) is moved onto the map this event will trigger
+     *  Popup with our own content will show up and the user can fill in the information
+     *  that wants to be stored
+     */
     map.on(L.Draw.Event.CREATED, function (e) {
-        console.log("Start");
+
         var popupContent = '<form class="meineForm" id="saveMarker" action="/api/save/marker/" method="POST">'+
             '<div class="form-group">'+
             '<label class="control-label col-sm-5"><strong>Name: </strong></label>'+
@@ -145,8 +154,8 @@ function initMap() {
             '<div class="form-group">'+
             '<label class="control-label col-sm-5"><strong>Art: </strong></label>'+
             '<select class="form-control" id="art" name="art">'+
-            '<option value="parkplatz">Parkplatz</option>'+
-            '<option value="zuschauer">Zuschauerplatz</option>'+
+            '<option value="Parkplatz">Parkplatz</option>'+
+            '<option value="Zuschauer">Zuschauerplatz</option>'+
             '</select>'+
             '</div>'+
             '<div class="form-group">'+
@@ -165,24 +174,19 @@ function initMap() {
 
         var type = e.layerType,
             layer = e.layer;
+        //add the marker to a layer
         editableLayers.addLayer(layer);
-        console.log(layer.getLatLng());
         L.popup({maxWidth:1000})
             .setContent(popupContent)
             .setLatLng(layer.getLatLng())
             .openOn(map);
-        console.log("Ende");
-
+        //Override the default handler for the saveMarker form previously defined
         $('#saveMarker').submit(function(e) {
             e.preventDefault();
             if (true){
-                var reverse = editableLayers.toGeoJSON();
-                console.dir(reverse);
-                var tmp1=reverse.features[0].geometry.coordinates[0];
-                reverse.features[0].geometry.coordinates[0]=reverse.features[0].geometry.coordinates[1];
-                reverse.features[0].geometry.coordinates[1]=tmp1;
+
                 // Append hidden field with actual GeoJSON structure
-                var inputGeo = $('<input type="hidden" name="geometry" value=' + JSON.stringify(reverse)+ '>');
+                var inputGeo = $('<input type="hidden" name="geometry" value=' + JSON.stringify(editableLayers.toGeoJSON())+ '>');
                 $(this).append(inputGeo);
                 var that = this;
 
@@ -218,6 +222,10 @@ function initMap() {
 
 
 }
+
+/** Modify the toolbar in order to show only one handle
+ *
+ */
 L.DrawToolbar.include({
     getModeHandlers: function(map) {
         return [

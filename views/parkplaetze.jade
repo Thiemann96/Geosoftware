@@ -60,14 +60,10 @@ html
                 #map
             #menu.col-md-4
                 h2 Karten-Tools
-                p#1
-                p#2
-                p#3
-                p#4
                 br
                 form.form-inline(id='loadMarker' action='/api/load/marker/' method='GET')
-                    input#name.form-control(type='text', name='loadname', placeholder='Name der Geometrie')
-                    input.btn.btn-default(type='submit', value='Geometrie aus Datenbank laden')
+                    input#name.form-control(type='text', name='loadname', placeholder='Name des Markers')
+                    input.btn.btn-default(type='submit', value='Marker aus der Datenbank laden')
                 br
                 form.form-inline(id='saveFormRoutes' action='/api/save/route/' method='POST')
                     input#name.form-control(type='text', name='nameroute', placeholder='Name der Route')
@@ -76,10 +72,6 @@ html
                 form.form-inline(id='loadFormRoutes' name='loadFormRoutes' action='/api/load/route/' method='GET')
                     input.form-control(type='text', name='loadname', id='loadname', value=loadRouteName, placeholder='Name der Route')
                     input.btn.btn-default(type='submit', id='loadRoutes', value='Route aus Datenbank laden & anzeigen')
-                //br
-                //form.form-inline(id='loadFormRoutesVisualization' action='/api/load/route/' method='GET')
-                //  input#name.form-control(type='text', name='loadname', placeholder='Name der Route')
-                //  input.btn.btn-default(type='submit', value='Visualisiere Route')
                 br
                 button.btn.btn-default(onclick='clearVisualizationLayer()') Lösche alle angezeigten Routen
                 br

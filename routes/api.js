@@ -32,9 +32,9 @@ router.post('/save/marker/', function(req, res, next) {
     jsoncollection  .insert({
         "geometry" : req.body.geometry,
         "name" : req.body.name,
-        "Art" : req.body.art,
-        "Kapazität":req.body.cap,
-        "Info":req.body.info
+        "art" : req.body.art,
+        "cap":req.body.cap,
+        "info":req.body.info
 
     }, function (err, doc) {
         if (err) {
