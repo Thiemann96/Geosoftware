@@ -1,0 +1,74 @@
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        meta(name='author', content= 'Eric Thieme-Garmann (429603)')
+        title Web-App - Geosoftware I, SoSe 2017, Abschlussabgabe
+        // Leaflet stuff
+        link(rel='stylesheet', href='https://unpkg.com/leaflet@1.0.3/dist/leaflet.css')
+        script(src='https://unpkg.com/leaflet@1.0.3/dist/leaflet.js')
+        // Leaflet draw plugin
+        link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.9/leaflet.draw.css')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.9/leaflet.draw.js')
+        // painless AJAXing
+        script(src='https://code.jquery.com/jquery-3.2.1.min.js')
+        // Bootstrap
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
+        // jQuery UI for resizing stuff
+        link(rel='stylesheet', href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css')
+        script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js')
+        // better have a bit of style
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        // Leaflet routing Engine
+        link(rel='stylesheet', href='/stylesheets/leaflet-routing-machine.css')
+        script(src='/javascripts/imported/leaflet-routing-machine.js')
+        // Leaflet Reverse Lookup
+        link(rel='stylesheet', href='/stylesheets/Control.Geocoder.css')
+        script(src='/javascripts/imported/Control.Geocoder.js')
+
+        // our app code
+        script(src='/javascripts/init.js')
+        script(src='/javascripts/Mongo.js')
+        script(src='/javascripts/showLocation.js')
+        script(src='/javascripts/loadExternalFile.js')
+        script(src='/javascripts/routing.js')
+        script(src='/javascripts/exportDrawing.js')
+
+    body
+        .container-fluid
+            .col-md-12
+                h1 Web-App
+                p Geosoftware I, SoSe 2017, Abschlussabgabe
+                ul.nav.nav-tabs
+                    li(role='presentation')
+                        a(href='/') Start
+                    li.active(role='presentation')
+                        a(href='parkplaetze') Karte
+                    li(role='presentation')
+                        a(href='impressum') Impressum
+                br
+                input.btn.btn-default(id='rcHide', type='submit', value='Hide route control')
+                input.btn.btn-default(id='rcShow', type='submit', value='Show route control')
+            #content.col-md-8
+                // Leaflet map div
+                #map.custom-popup
+            #menu.col-md-4
+                h2 Karten-Tools
+                br
+                form.form-inline(id='loadMarker' action='/api/load/marker/' method='GET')
+                    input#name.form-control(type='text', name='loadname', placeholder='Name des Markers')
+                    input.btn.btn-default(type='submit', value='Marker aus der Datenbank laden')
+                br
+                form.form-inline(id='loadEtappe' name='loadEtappe' action='/api/load/etappe/' method='GET')
+                    input.form-control(type='text', name='names', id='names', value=names, placeholder='Name der Route')
+                    input.btn.btn-default(type='submit', id='loadSEtappe', value='Route aus Datenbank laden & anzeigen')
+                br
+                button.btn.btn-default(onclick='clearVisualizationLayer()') Lösche alle angezeigten Routen
+                br
+                div#pictures
+                    h2 Die Bilder der geladenenen Etappe:
+                    img(id='pic' src='', alt='')
+
+
