@@ -5,11 +5,19 @@
 
 'use strict';
 /**
- * load external GeoJSON file via Ajax (Caution! Server to load from has to allow cross origin requests!)
+ *@desc Reads the geojson
  */
-function showExternalFile() {
-    $.get(document.getElementById('externalfile').value, function(response) {
-        L.geoJSON(JSON.parse(response)).addTo(map);
-    });
+function readGeoJSONFromTA() {
+    return JSON.parse($('textarea#geojson-area')[0].value);
+}
+
+/**
+ *@desc add and load the read GeoJSON on the map
+ */
+function loadGeoJSON() {
+    var feat = readGeoJSONFromTA();
+    var gLayer = L.geoJson(feat);
+    gLayer.addTo(map);
+
 }
 

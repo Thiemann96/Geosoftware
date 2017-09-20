@@ -11,15 +11,16 @@ router.get('/karte/', function(req, res, next) {
   res.render('karte', {});
 });
 
-/* GET Karte page. */
-router.get('/karte/:id/', function(req, res, next) {
-  res.render('karte', {loadRouteName: req.params.id});
+/* GET permalink etappe. */
+router.get('/Etappe/:id/', function(req, res, next) {
+  res.render('parkplaetze', {loadEtappe: req.params.id});
 });
 
-/* GET Zuschauerplatze page. */
-router.get('/zuschauerplaetze', function(req, res, next) {
-    res.render('zuschauerplaetze', {});
+/* GET permalinks marker. */
+router.get('/Marker/:id/', function(req, res, next) {
+    res.render('parkplaetze', {loadMarker: req.params.id});
 });
+
 
 /* GET Parkplatze page. */
 router.get('/parkplaetze', function(req, res, next) {

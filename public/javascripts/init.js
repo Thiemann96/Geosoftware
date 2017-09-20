@@ -148,7 +148,7 @@ function initMap() {
                 map.closePopup();
                 var koordinatenStart = new L.LatLng(waypoints[0].latLng.lat,waypoints[0].latLng.lng);
                 var popupStart = L.marker(koordinatenStart).addTo(visualizationLayers);
-                popupStart.bindPopup(popupStartcontent).openPopup();
+                popupStart.bindPopup(popupStartcontent).openPopup()
 
                 $('#saveEtappe').submit(function(e) {
                     e.preventDefault();
@@ -251,17 +251,12 @@ function initMap() {
             layer = e.layer;
         //add the marker to a layer
         editableLayers.addLayer(layer);
-        var popup = L.popup({Width:1000
-            })
-            .setContent(popupContent)
-            .setLatLng(layer.getLatLng())
-            .openOn(map);
-
+        var marker = L.marker(layer.getLatLng()).addTo(map);
+        var popup = marker.bindPopup(popupContent).openPopup();
 
         //Override the default handler for the saveMarker form previously defined
         $('#saveMarker').submit(function(e) {
             e.preventDefault();
-
                 // Append hidden field with actual GeoJSON structure
                 var inputGeo = $('<input type="hidden" name="geometry" value=' + JSON.stringify(editableLayers.toGeoJSON())+ '>');
                 $(this).append(inputGeo);
@@ -280,8 +275,19 @@ function initMap() {
                     }
                 });
                 inputGeo.remove();
+            console.log(that.elements.name.value);
                 map.closePopup();
 
+            /**Popup wurde nach dem speichern geschlossen und ein neuer popup wird dem marker
+             * zugewiesen der den eben gespeicherten Inhalt repräsentiert.
+             * @type {string}
+             */
+            var popup2Content='<div class="form-group">' +'<label class="control-label col-sm-12 "><strong>Name: </strong></label>' +
+                '<label>'+ that.elements.name.value+ '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Art:</strong></label>'
+                + '<label>'+ that.elements.art.value + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Kapazität:</strong></label>'
+                + '<label>'+that.elements.cap.value +'</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Weitere Informationen:</strong></label>'
+                + '<label>'+ that.elements.info.value+'</label>' + '</div>';;
+            var popup2 = marker.bindPopup(popup2Content);
             return false;
 
         });
@@ -296,6 +302,7 @@ function initMap() {
     });
     map.on(L.Draw.Event.DRAWSTOP, function (e) {
         routeSwitch = true;
+
     });
 
     extras.addLayer(visualizationLayers);

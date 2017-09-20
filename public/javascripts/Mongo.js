@@ -99,11 +99,19 @@ $(document).ready(function() {
   });
 
 
+    /** Implementierung der Permalinks
+     * soll eine Etappe geladen werden muss nach folgender Form eingeben werden:
+     * localhost:3000/Etappe/[Name der Etappe]
+     * soll ein Marker(e.g. Parkplatz oder Zuschauerplatz) geladen werden :
+     * localhost:3000/Marker/[Name des Markers]
+     */
+  if ((document.getElementById('names')).value !== ""){
+    document.getElementById('loadSEtappe').click();
+  }
 
-
-/*  if ((document.getElementById('names')).value != ""){
-    document.getElementById('loadRoutes').click();
-  }*/
+    if ((document.getElementById('name')).value !== ""){
+        document.getElementById('loadMarkers').click();
+    }
 });
 
 
