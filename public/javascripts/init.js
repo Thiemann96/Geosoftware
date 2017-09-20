@@ -5,25 +5,23 @@
 
 
 'use strict';
-
+/**Global variables which are used throughout the app
+ */
 var zwischenspeicher, map, layercontrol, editableLayers, visualizationLayers, drawControl, routeControl, routeSwitch, currentRoute;
 
 
-/** Defining my own Markers in order to properly display
- * parking lots and the stands
- */
 
 
 function initMap() {
 
     var extras = L.layerGroup([]);
 
-    var Normal = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}\'', {id: 'MapID', attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'}),
-        streets   = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {id: 'MapID', attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
+    var streets = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}\'', {id: 'MapID', attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'}),
+        Normal   = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {id: 'MapID', attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
 
     routeSwitch = true;
     map = L.map('map', {
-        center: [40.416775, -3.703790], // Centre of Spain
+        center: [40.416775, -3.703790], // Centre of Spain 40.416775, -3.703790
         zoom: 12,
         layers: [Normal, extras],
         zoomControl: false
@@ -33,8 +31,7 @@ function initMap() {
     }).addTo(map);
 
     var baseMaps = {
-        "<span style='color: brown'>Normal</span>": Normal,
-        "Open-Street Map": streets
+        "<span style='color: brown'>OpenStreetMap</span>": Normal,
     };
 
     var overlayMaps = {
@@ -56,16 +53,17 @@ function initMap() {
     });
     routeControl.addTo(map);
 
-    $(document).ready(function(){
-            $("#rcShow").hide();
-    });
-    $(document).ready(function(){
-        $("#pictures").hide();
-    });
+
+
+
 
     /** Function in order for the hide & show Button for the routeControl
-     * to be properly displayed
+     * to be properly displayed,shown by default
      */
+    $(document).ready(function(){
+        $("#rcShow").hide();
+    });
+
     $(document).ready(function(){
         $("#rcHide").click(function(){
             $("#rcHide").hide();
@@ -78,6 +76,8 @@ function initMap() {
     /** Function in order for the hide & show Button for the routeControl
      * to be properly displayed
      */
+
+
     $(document).ready(function(){
         $("#rcShow").click(function(){
             $("#rcShow").hide();
@@ -85,6 +85,8 @@ function initMap() {
             $("#rcHide").show();
         });
     });
+
+
     $(document).ready(function(){
         $("#loadSEtappe").click(function(){
             $("#pictures").show();
@@ -140,7 +142,7 @@ function initMap() {
                     '<input type="text" placeholder="https://www......" id="picende" name="picende" class="form-control"/>'+
                     '</div>'+
                     '<div class="form-group">'+
-                    '<div style="text-align:center;" class="col-xs-4"><button type="submit" value="speichern" class="btn btn-primary trigger-submit">Etappe speichern</button></div>'+              '</div>'+
+                    '<div style="text-align:center;" class="col-xs-4"><button type="submit" value="speichern" class="btn btn-success trigger-submit">Etappe speichern</button></div>'+              '</div>'+
                     '</form>';
 
                 routeControl.spliceWaypoints(routeControl.getWaypoints().length - 1, 1, e.latlng);
@@ -243,7 +245,7 @@ function initMap() {
             '<textarea class="form-control" rows="6" id="info" name="info">...</textarea>'+
             '</div>'+
             '<div class="form-group">'+
-            '<div style="text-align:center;" class="col-xs-4"><button type="submit" value="speichern" class="btn btn-primary trigger-submit">Marker speichern</button></div>'+              '</div>'+
+            '<div style="text-align:center;" class="col-xs-4"><button type="submit" value="speichern" class="btn btn-success trigger-submit">Marker speichern</button></div>'+              '</div>'+
             '</form>';
 
 
@@ -374,3 +376,4 @@ function createForm() {
     //document.body.appendChild(btn);                    // Append <button> to <body>
 
 }
+

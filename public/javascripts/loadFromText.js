@@ -16,8 +16,11 @@ function readGeoJSONFromTA() {
  */
 function loadGeoJSON() {
     var feat = readGeoJSONFromTA();
+    console.dir(feat);
     var gLayer = L.geoJson(feat);
-    gLayer.addTo(map);
+    console.dir(gLayer);
+    gLayer.addTo(visualizationLayers);
 
 }
+
 

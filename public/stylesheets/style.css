@@ -16,11 +16,9 @@
     );
   background-size: 100% 20px;
 }
-#pictures {
-  height: 400px;
-  border-style: dashed;
-  border-color:lightgray;
-}
+#wikistart {
+  position:relative;
+  }
 
 img {
   padding: 0;
@@ -31,4 +29,11 @@ img {
 #starttermin {
   width: 20%;
 }
-
+#jsonbutton {
+  position:relative;
+  left: 80%;
+}
+#uploadbutton {
+  position:relative;
+  left:63%;
+}

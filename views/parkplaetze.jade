@@ -15,7 +15,8 @@ html
         // painless AJAXing
         script(src='https://code.jquery.com/jquery-3.2.1.min.js')
         // Bootstrap
-        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
         // jQuery UI for resizing stuff
         link(rel='stylesheet', href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css')
         script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js')
@@ -27,14 +28,20 @@ html
         // Leaflet Reverse Lookup
         link(rel='stylesheet', href='/stylesheets/Control.Geocoder.css')
         script(src='/javascripts/imported/Control.Geocoder.js')
+        script(src='/javascripts/init.js')
+
+        script(type='text/javascript', src='/javascripts/bootstrap-filestyle.min.js')
 
         // our app code
-        script(src='/javascripts/init.js')
+        script(src='/javascripts/imported/jsnlog.min.js')
         script(src='/javascripts/Mongo.js')
         script(src='/javascripts/showLocation.js')
-        script(src='/javascripts/loadExternalFile.js')
+        script(src='/javascripts/loadFromText.js')
         script(src='/javascripts/routing.js')
         script(src='/javascripts/exportDrawing.js')
+        script(src='/javascripts/exportDrawing.js')
+        script(src='/javascripts/showExternal.js')
+
 
 
     body
@@ -50,63 +57,81 @@ html
                     li(role='presentation')
                         a(href='impressum') Impressum
                 br
-                input.btn.btn-default(id='rcHide', type='submit', value='Hide route control')
-                input.btn.btn-default(id='rcShow', type='submit', value='Show route control')
+                input.btn.btn-success(id='rcHide', type='submit', value='Hide route control')
+                input.btn.btn-success(id='rcShow', type='submit', value='Show route control')
             #content.col-md-8
                 // Leaflet map div
-                #map
+                #map.map
             #menu.col-md-4
-                h2 Karten-Tools
-                br
-
-
-                // row for content
-                .container
                     .row
-                        .col-md-6
-                            .panel-group
+                        .col-md-12
+                            #panelid.panel-group
                                 .panel.panel-default
                                     .panel-heading
-                                        a.text-muted(data-toggle='collapse', data-target='#ajaxForm')
-                                            span.glyphicon.glyphicon-send(aria-hidden='true')
-                                            |             Enter a Url which leads to a Geojson file to show it on the map
-                                    #ajaxForm.panel-body
-                                        .input-group
-                                            input#urlTextfield.form-control(type='text', placeholder='http://...')
-                                            span.input-group-btn
-                                                button.btn.btn-default(type='button', onclick='getJson()')
-                                                    | show GeoJSON!
-                                        // /input-group
+                                         a.accordion-toggle.text-muted(data-toggle='collapse' data-target='#collapse1' data-parent='#panelid')
+                                            span.glyphicon.glyphicon-pencil(aria-hidden='true')
+                                            |       Gebe eine GeoJSON Datei an und sie wird auf der Karte angezeigt
+                                    #collapse1.panel-collapse.collapse.out
+                                        .panel-body
+                                            .form-group
+                                                textarea#geojson-area.form-control(rows='8', placeholder='Paste your GeoJSON here')
+                                            .form-group
+                                                button.btn.btn-success(id ='jsonbutton' onclick='loadGeoJSON()')
+                                                    span.glyphicon
+                                                    |  Zeig's mir an !
+
                                 .panel.panel-default
                                     .panel-heading
-                                        a.text-muted(data-toggle='collapse', data-target='#fileForm')
+                                        a.text-muted(data-toggle='collapse', data-target='#collapse2')
                                             span.glyphicon.glyphicon-folder-open(aria-hidden='false')
                                             |             &nbsp
-                                            |             Select a textfile including coordinates to show it on the map
-                                    #fileForm.panel-body.panel-collapse.collapse.in
-                                        input(type='file', accept='text/plain', onchange='ReadFile(event)')
+                                            |             Lade eine GeoJSON Datei hoch und sie wird auf der Karte angezeigt
+                                    #collapse2.panel-body.panel-collapse.collapse.out
+                                        input(id='externalfile' accept='text/plain' type="file" class="filestyle" data-btnClass="btn-success" onchange='ReadFile(event)' data-placeholder="Lade eine GeoJSON Datei hoch")
 
                                 .panel.panel-default
                                     .panel-heading
-                                        form.panel-body(id='loadMarker' action='/api/load/marker/' method='GET')
-                                                input#name.form-control(type='text', name='loadname', placeholder='Name des Markers' value=loadMarker)
-                                                span.input-group-btn
-                                                    input#loadMarkers.btn.btn-default(type='submit', value='Marker aus der Datenbank laden')
+                                        a.text-muted(data-toggle='collapse' data-target='#loadMarker')
+                                            span.glyphicon.glyphicon-open(aria-hidden='true')
+                                            |                  Geben sie den Namen des Markers ein und er wird auf der Karte angezeigt
+                                       form.panel-body.panel-collapse.collapse.out(id='loadMarker' action='/api/load/marker/' method='GET')
+                                           .input-group
+                                                    input#name.form-control(type='text', name='loadname', placeholder='Name des Markers' value=loadMarker)
+                                                    span.input-group-btn
+                                                        input#loadMarkers.btn.btn-success(type='submit', value='Marker aus  Datenbank laden')
                                 .panel.panel-default
                                     .panel-heading
-                                        form.panel-body.panel(id='loadEtappe' name='loadEtappe' action='/api/load/etappe/' method='GET')
-                                            input.form-control(type='text', name='names', id='names', value=loadEtappe, placeholder='Name der Route')
-                                            input.btn.btn-default(type='submit', id='loadSEtappe', value='Route aus Datenbank laden & anzeigen')
+                                        a.text-muted(data-toggle='collapse' data-target='#loadEtappe')
+                                            span.glyphicon.glyphicon-open(aria-hidden='true')
+                                            |                   Geben sie den Namen der Etappe ein und sie wird auf der Karte angezeigt
+                                       form.panel-body.panel-collapse.collapse.outy(id='loadEtappe' name='loadEtappe' action='/api/load/etappe/' method='GET')
+                                            .input-group
+                                                      input.form-control(type='text', name='names', id='names', value=loadEtappe, placeholder='Name der Route')
+                                                      span.input-group-btn
+                                                          input.btn.btn-success(type='submit', id='loadSEtappe', value='Etappe aus Datenbank laden')
+
+                                #wikistart.panel.panel-default
+                                    .panel-heading
+                                        a.text-muted(data-toggle='collapse' data-target='#collapse4')
+                                            span.glyphicon.glyphicon-education
+                                                | Der Wikipedia Eintrag zum Startort & Zielort der geladenen Etappe
+
+                                    #collapse4.panel-body.panel-collapse.collapse.out
+                                        span
+                                            | Das Leben draußen ist hart
+
+                                #pictures.panel.panel-default
+                                    .panel-heading
+                                        a.text-muted
+                                            span.glyphicon.glyphicon-picture
+                                                |               Die Bilder der Etappe
+                                    .panel-body.panel-collapse.collapse.in
+                                           img(id='pic' src='', alt='Das Bild aus der Datenbank sollte hier geladen sein' height="320px" width="42px")
 
 
 
-                br
 
-                br
-                button.btn.btn-default(onclick='clearVisualizationLayer()') Lösche alle angezeigten Routen
-                br
-                div#pictures
-                    h2 Die Bilder der geladenenen Etappe:
-                    img(id='pic' src='', alt='')
+
+
 
 
