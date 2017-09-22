@@ -42,8 +42,6 @@ html
         script(src='/javascripts/exportDrawing.js')
         script(src='/javascripts/showExternal.js')
 
-
-
     body
         .container-fluid
             .col-md-12
@@ -114,11 +112,19 @@ html
                                     .panel-heading
                                         a.text-muted(data-toggle='collapse' data-target='#collapse4')
                                             span.glyphicon.glyphicon-education
-                                                | Der Wikipedia Eintrag zum Startort & Zielort der geladenen Etappe
-
+                                                | Der Wikipedia Eintrag zum Startort der geladenen Etappe
                                     #collapse4.panel-body.panel-collapse.collapse.out
-                                        span
-                                            | Das Leben draußen ist hart
+                                        #wiki.wikipedia.p
+                                            | Laden sie eine Etappe um den Wikipedia Eintrag zu laden
+
+                                #wikiend.panel.panel-default
+                                    .panel-heading
+                                        a.text-muted(data-toggle='collapse' data-target='#collapse5')
+                                            span.glyphicon.glyphicon-education
+                                                | Der Wikipedia Eintrag zum Zielort der geladenen Etappe
+                                    #collapse5.panel-body.panel-collapse.collapse.out
+                                        #wikie.wikipedia.p
+                                            | Laden sie eine Etappe um den Wikipedia Eintrag zu laden
 
                                 #pictures.panel.panel-default
                                     .panel-heading
@@ -127,6 +133,7 @@ html
                                                 |               Die Bilder der Etappe
                                     .panel-body.panel-collapse.collapse.in
                                            img(id='pic' src='', alt='Das Bild aus der Datenbank sollte hier geladen sein' height="320px" width="42px")
+
 
 
 

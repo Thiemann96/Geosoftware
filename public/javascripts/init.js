@@ -7,7 +7,7 @@
 'use strict';
 /**Global variables which are used throughout the app
  */
-var zwischenspeicher, map, layercontrol, editableLayers, visualizationLayers, drawControl, routeControl, routeSwitch, currentRoute;
+var city , zwischenspeicher, map, layercontrol, editableLayers, visualizationLayers, drawControl, routeControl, routeSwitch, currentRoute;
 
 
 
@@ -284,11 +284,23 @@ function initMap() {
              * zugewiesen der den eben gespeicherten Inhalt repräsentiert.
              * @type {string}
              */
-            var popup2Content='<div class="form-group">' +'<label class="control-label col-sm-12 "><strong>Name: </strong></label>' +
-                '<label>'+ that.elements.name.value+ '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Art:</strong></label>'
-                + '<label>'+ that.elements.art.value + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Kapazität:</strong></label>'
-                + '<label>'+that.elements.cap.value +'</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Weitere Informationen:</strong></label>'
-                + '<label>'+ that.elements.info.value+'</label>' + '</div>';;
+
+            var popup2Content;
+            console.log(that.elements.art.value);
+            if(that.elements.art.value =="Zuschauer") {
+                 popup2Content = '<div class="form-group">' + '<label class="control-label col-sm-12 "><strong>Name: </strong></label>' +
+                    '<label>' + that.elements.name.value + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Art:</strong></label>'
+                    + '<label>' + that.elements.art.value + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Kapazität:</strong></label>'
+                    + '<label>' + that.elements.cap.value + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Weitere Informationen:</strong></label>'
+                    + '<label>' + that.elements.info.value + '</label>' + '</div>' + '<div style="text-align:center;" class="col-xs-4"><button id="nextlot" type="submit" value="nextlot" onclick="nextlot()" class="btn btn-success trigger-submit">Nächster Parkplatz </button></div>'
+            }
+            else{
+                 popup2Content = '<div class="form-group">' + '<label class="control-label col-sm-12 "><strong>Name: </strong></label>' +
+                    '<label>' + that.elements.name.value + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Art:</strong></label>'
+                    + '<label>' + that.elements.art.value + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Kapazität:</strong></label>'
+                    + '<label>' + that.elements.cap.value + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Weitere Informationen:</strong></label>'
+                    + '<label>' + that.elements.info.value + '</label>' + '</div>'
+            }
             var popup2 = marker.bindPopup(popup2Content);
             return false;
 
@@ -359,10 +371,16 @@ function initUI() {
 }
 
 
+
+
+
+
 document.addEventListener("DOMContentLoaded", function(event) {
     initMap();
     initUI();
 });
+
+
 function clearVisualizationLayer() {
 
     visualizationLayers.clearLayers();
@@ -377,3 +395,5 @@ function createForm() {
 
 }
 
+function nextlot(){
+    console.log("This is working");}

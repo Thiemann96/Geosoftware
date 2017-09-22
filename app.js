@@ -8,8 +8,6 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var api = require('./routes/api');
 
-var GeoSearchControl = require('leaflet-geosearch');
-var OpenStreetMapProvider = require('leaflet-geosearch');
 var app = express();
 
 // view engine setup
