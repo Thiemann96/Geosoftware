@@ -9,15 +9,18 @@
 
 // Overwrite HTML Form handlers once document is created.
 $(document).ready(function() {
-    var loadedMarkerlat;
-    var loadedMarkerlng;
+
     $('#loadMarker').submit(function(e) {
 
         // Prevent default html form handling
         e.preventDefault();
 
+
+
         var that = this;
+
         // submit via ajax
+
         $.ajax({
             // catch custom response code.
             statusCode: {
@@ -46,19 +49,23 @@ $(document).ready(function() {
                     console.log("success");
                 // Add Geometry to Map & permanently bind the popup to the GeoJSON object
                 var loadedMarker=JSON.parse(res[0].geometry);
-                console.dir(loadedMarker);
-                loadedMarkerlat =loadedMarker.features[0].geometry.coordinates[0];
-                loadedMarkerlng = loadedMarker.features[0].geometry.coordinates[1];
+
+                /**
+                 * Saving the coordinates for further use in the reverse geocoding function
+                 *
+                 */
+                var loadedMarkerlat =loadedMarker.features[0].geometry.coordinates[0];
+                var loadedMarkerlng = loadedMarker.features[0].geometry.coordinates[1];
+
                 L.geoJSON(loadedMarker).addTo(visualizationLayers).bindPopup((popupcontent)).openPopup();
-                console.log("The marker:" + loadedMarkerlng);
+
 
                 console.log("Geometry '" + that.elements.name.value + "' successfully loaded.");
+                getWiki(reverseGeocoding(loadedMarkerlng,loadedMarkerlat));
+
             }
         });
-        console.log(loadedMarkerlat);
-        getWiki(reverseGeocoding(loadedMarkerlng,loadedMarkerlat));
         return false;
-
     }
 
 );
@@ -88,19 +95,30 @@ $(document).ready(function() {
       },
       success: function(res) {
         var route = JSON.parse(res[0].route);
-          console.dir(route);
 
           var marker = L.marker([route.waypoints[0].latLng.lat, route.waypoints[0].latLng.lng]).addTo(visualizationLayers);
-        var popupcontent = '<div class="form-group">' +'<label class="control-label col-sm-12 "><strong>Etappenname: </strong></label>' +
+          var marker2 = L.marker([route.waypoints[1].latLng.lat, route.waypoints[1].latLng.lng]).addTo(visualizationLayers);
+
+          var popupcontent = '<div class="form-group">' +'<label class="control-label col-sm-12 "><strong>Etappenname: </strong></label>' +
             '<label>'+ res[0].Etappenname + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong>Start: </strong></label>'
             + '<label>'+ res[0].Start +'</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Ende: </strong></label>'
             + '<label>'+ res[0].Ende +'</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Website: </strong></label>'
             + '<label>'+ res[0].Website +'</label>' + '</div>'+'</div>';
 
-        //routeControl.setWaypoints(route.waypoints).addTo(map);
+          routeControl.setWaypoints(route.waypoints);
+          console.dir(route.waypoints);
           L.geoJSON(RouteToGeoJSON(route.route)).addTo(visualizationLayers);
-          console.dir(L.geoJSON(RouteToGeoJSON(route.route)));
+
+          console.dir(          routeControl.setWaypoints(route.waypoints)
+      );
           marker.bindPopup(popupcontent).openPopup();
+          marker2.bindPopup("Ziel");
+
+
+          getWiki(reverseGeocoding(route.waypoints[0].latLng.lat,route.waypoints[0].latLng.lng),'#wiki');
+
+          getWiki(reverseGeocoding(route.waypoints[1].latLng.lat,route.waypoints[1].latLng.lng),'#wikie');
+
           $("#pic").attr("src", res[0].StartBild);
 
           //console.log("Route '" + that.elements.names.value + "' successfully loaded.");
@@ -117,8 +135,8 @@ $(document).ready(function() {
      * soll ein Marker(e.g. Parkplatz oder Zuschauerplatz) geladen werden :
      * localhost:3000/Marker/[Name des Markers]
      * loadSEtappe
-     *//*
-  if ((document.getElementById('names')).value !== ""){
+     */
+/*  if ((document.getElementById('names')).value !== ""){
     document.getElementById('loadSEtappe').click();
   }
 
@@ -127,59 +145,12 @@ $(document).ready(function() {
     }*/
 });
 
-
-/*function loadMarker(){
-
-    var loadedMarkerlat;
-    var loadedMarkerlng;
-
-    $.ajax({
-        // catch custom response code.
-        statusCode: {
-            404: function() {
-                console.log("Geometry with the name '" + that.elements.name.value + "' is not present in the Database.");
-            }
-        },
-        data: '',
-        type: $(that).attr('method'),
-        // Dynamically create Request URL by appending requested name to /api prefix
-        url:  $(that).attr('action') + that.elements.name.value,
-        async:false,
-        error: function(xhr, status, err) {
-        },
-        success: function(res) {
-
-            /!** The popup will show the attributes which got pulled from the database
-             *
-             * @type {string}
-             *!/
-            var popupcontent='<div class="form-group">' +'<label class="control-label col-sm-12 "><strong>Name: </strong></label>' +
-                '<label>'+ res[0].name + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Art:</strong></label>'
-                + '<label>'+ res[0].art +'</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Kapazität:</strong></label>'
-                + '<label>'+ res[0].cap +'</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Weitere Informationen:</strong></label>'
-                + '<label>'+ res[0].info +'</label>' + '</div>';
-            console.log("success");
-            // Add Geometry to Map & permanently bind the popup to the GeoJSON object
-            var loadedMarker=JSON.parse(res[0].geometry);
-            console.dir(loadedMarker);
-            loadedMarkerlat =loadedMarker.features[0].geometry.coordinates[0];
-            loadedMarkerlng = loadedMarker.features[0].geometry.coordinates[1];
-            L.geoJSON(loadedMarker).addTo(visualizationLayers).bindPopup((popupcontent)).openPopup();
-            console.log("The marker:" + loadedMarkerlng);
-
-            console.log("Geometry '" + that.elements.name.value + "' successfully loaded.");
-        }
-    });
-
-
-
-}*/
-
-/** Funktion die an die Wikipedia API eine Get anfrage sendet und die Einleitung des eingegebenen Ortes anzeigt
+/** Funktion die an die Wikipedia API eine Get anfrage sendet und die Einleitung des eingegebenen Ortes anzeigt.
+ * URL wird dynamisch basierend auf dem übergebenen Stadtnamen kreiert.
  *  Code teilweise benutzt von : http://www.9bitstudios.com/2014/03/getting-data-from-the-wikipedia-api-using-jquery/
  */
 
-function getWiki(city) {
+function getWiki(city,location) {
 
     var errorMessage1="Zu diesem Ort gibt es leider keinen Wikipedia Eintrag";
     var url = "http://de.wikipedia.org/w/api.php?action=parse&format=json&prop=text&section=0&page="+city+"&callback=?";
@@ -194,10 +165,10 @@ function getWiki(city) {
 
 
             //Falls es keinen Wikipedia Eintrag zu dieser Stadt gibt
-/*            if(data.error.code=='missingtitle'){
+            /*            if(data.error.code=='missingtitle'){
 
-                document.getElementsByClassName("wikipedia")[0].innerHTML = errorMessage1;
-            }*/
+                            document.getElementsByClassName("wikipedia")[0].innerHTML = errorMessage1;
+                        }*/
             var markup = data.parse.text["*"];
             var wikieintrag = $('<div></div>').html(markup);
 
@@ -211,13 +182,13 @@ function getWiki(city) {
 
             // remove cite error
             wikieintrag.find('.mw-ext-cite-error').remove();
-            $('#wiki').html($(wikieintrag).find('p'));
+
+            $(location).html($(wikieintrag).find('p'));
         },
         error: function (errorMessage) {
         }
     })
 };
-
 
 /** Funktion die bei Marker laden benutzt wird und im BackEnd die Koordinaten entegegn nimmt
  * und die Stadt zurück gibt
@@ -242,8 +213,6 @@ function reverseGeocoding(lat,lon){
 
             // Hier ist die Ausgabe
 
-            console.log(result.address.city);
-            console.dir(result);
             $("#result_country").html(result.address.country);
             city = result.address.city;
 
@@ -251,10 +220,10 @@ function reverseGeocoding(lat,lon){
         error:function(result){
             // Was passiert wenn ein Fehler auftritt
             document.write("Please only give floating point numbers and actual GPS-Coordinates!");
-            console.log(result);
         }
     });
 
     return city
 }
+
 

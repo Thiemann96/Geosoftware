@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var monk = require('monk');
-var db = monk('localhost:27017/neu');
+var db = monk('192.168.0.16:27017/neu');
 
 /**Load marker
  *
