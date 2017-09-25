@@ -7,7 +7,7 @@
 'use strict';
 /**Global variables which are used throughout the app
  */
-var   city, markerlat,markerlng , zwischenspeicher, map, layercontrol,loadedEtappe,loadedMarkers, editableLayers, visualizationLayers, drawControl, routeControl, routeSwitch, currentRoute;
+var   extras,city, markerlat,markerlng , zwischenspeicher, map, layercontrol,loadedEtappe,loadedMarkers, editableLayers, visualizationLayers, drawControl, routeControl, routeSwitch, currentRoute;
 var  parklots=[];
 
 
@@ -15,8 +15,10 @@ function initMap() {
 
     var extras = L.layerGroup([]);
     var alleMarker = L.layerGroup([]);
+
     loadedEtappe = new L.FeatureGroup();
     loadedMarkers = new L.FeatureGroup();
+
     var tmp1 = new L.FeatureGroup();
     var streets = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}\'', {id: 'MapID', attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'}),
         Normal   = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {id: 'MapID', attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
@@ -112,7 +114,6 @@ function initMap() {
             var container = L.DomUtil.create('div'),
                 startBtn = createButton('Start from this location', container),
                 destBtn = createButton('Go to this location', container);
-            console.log(e.latlng);
             L.popup()
                 .setContent(container)
                 .setLatLng(e.latlng)
@@ -178,7 +179,7 @@ function initMap() {
 
                // extras.addLayer(loadedEtappe);
 
-                popupStart.bindPopup(popupStartcontent).openPopup()
+                popupStart.bindPopup(popupStartcontent).openPopup().update();
 
                 $('#saveEtappe').submit(function(e) {
                     e.preventDefault();
@@ -281,7 +282,7 @@ function initMap() {
             //...
             '<div class="form-group">'+
             '<label class="control-label col-sm-5"><strong>Description: </strong></label>'+
-            '<textarea class="form-control" rows="6" id="info" name="info">...</textarea>'+
+            '<textarea class="form-control" placeholder="Weitere Beschreibung ..." rows="6" id="info" name="info"></textarea>'+
             '</div>'+
             '<div class="form-group">'+
             '<div style="text-align:center;" class="col-xs-4"><button type="submit" value="speichern" class="btn btn-success trigger-submit">Marker speichern</button></div>'+              '</div>'+
@@ -332,7 +333,7 @@ function initMap() {
             if(that.elements.art.value =="Zuschauer") {
 
                 popup2Content = '<div class="form-group">' + '<label class="control-label col-sm-12 "><strong>Name: </strong></label>' +
-                    '<label>' + marker.getLatLng().lat + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Art:</strong></label>'
+                    '<label>' + that.elements.name.value + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Art:</strong></label>'
                     + '<label>' + that.elements.art.value + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Kapazität:</strong></label>'
                     + '<label>' + that.elements.cap.value + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Weitere Informationen:</strong></label>'
                     + '<label>' + that.elements.info.value + '</label>' + '</div>' + '<div style="text-align:center;" class="col-xs-4"><button id="nextlot" type="submit" value="nextlot" onclick="nextlot()" class="btn btn-success trigger-submit">Nächster Parkplatz </button></div>'
@@ -342,7 +343,7 @@ function initMap() {
                     '<label>' + marker.getLatLng().lat + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Art:</strong></label>'
                     + '<label>' + that.elements.art.value + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Kapazität:</strong></label>'
                     + '<label>' + that.elements.cap.value + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Weitere Informationen:</strong></label>'
-                    + '<label>' + that.elements.info.value + '</label>' + '</div>'
+                    + '<label>' + that.elements.info.value + '</label>' + '</div>';
 
                 parklots.push(new L.LatLng(markerlat,markerlng));
                 console.log(parklots);
@@ -431,11 +432,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 
 
-function clearVisualizationLayer() {
-
-    visualizationLayers.clearLayers();
-
-}
 
 function createForm() {
 
@@ -486,7 +482,6 @@ function nextlot(){
 
     routeControl.addTo(map).setWaypoints([zuschauer,nextlot]);
     console.log("The next parking lot is at:     " + nextlot );
-
 
 }
 

@@ -24,26 +24,22 @@ html
         link(rel='stylesheet', href='/stylesheets/style.css')
         // Leaflet routing Engine
         link(rel='stylesheet', href='/stylesheets/leaflet-routing-machine.css')
-        script(src='/javascripts/imported/leaflet-routing-machine.js')
         // Leaflet Reverse Lookup
         link(rel='stylesheet', href='/stylesheets/Control.Geocoder.css')
+        script(src='/javascripts/imported/leaflet-routing-machine.js')
         script(src='/javascripts/imported/Control.Geocoder.js')
         script(src='/javascripts/imported/turf.min.js')
 
-        script(src='/javascripts/init.js')
 
-        //Turf js
-
-        script(type='text/javascript', src='/javascripts/bootstrap-filestyle.min.js')
+        //Bootstrapp JS
+        script(type='text/javascript', src='/javascripts/imported/bootstrap-filestyle.min.js')
+        // JS logger
+        script(src='/javascripts/imported/jsnlog.min.js')
 
         // our app code
-        script(src='/javascripts/imported/jsnlog.min.js')
+        script(src='/javascripts/init.js')
         script(src='/javascripts/Mongo.js')
-        script(src='/javascripts/showLocation.js')
-        script(src='/javascripts/loadFromText.js')
         script(src='/javascripts/routing.js')
-        script(src='/javascripts/exportDrawing.js')
-        script(src='/javascripts/exportDrawing.js')
         script(src='/javascripts/showExternal.js')
 
     body
@@ -79,7 +75,7 @@ html
                                                 textarea#geojson-area.form-control(rows='8', placeholder='Paste your GeoJSON here')
                                             .form-group
                                                 button.btn.btn-success(id ='jsonbutton' onclick='loadGeoJSON()')
-                                                    span.glyphicon
+                                                    span.glyphicon.glyphicon-send
                                                     |  Zeig's mir an !
 
                                 .panel.panel-default
@@ -119,7 +115,7 @@ html
                                                 | Der Wikipedia Eintrag zum Startort der geladenen Etappe
                                     #collapse4.panel-body.panel-collapse.collapse.out
                                         #wiki.wikipedia.p
-                                            | Laden sie eine Etappe um den Wikipedia Eintrag zu laden
+                                            | Entweder haben sie keine Etappe geladen , oder zu diesem Ort gibt es keinen Wikipedia Eintrag
 
                                 #wikiend.panel.panel-default
                                     .panel-heading
@@ -128,25 +124,33 @@ html
                                                 | Der Wikipedia Eintrag zum Zielort der geladenen Etappe
                                     #collapse5.panel-body.panel-collapse.collapse.out
                                         #wikie.wikipedia.p
-                                            | Laden sie eine Etappe um den Wikipedia Eintrag zu laden
+                                            |  Entweder haben sie keine Etappe geladen , oder zu diesem Ort gibt es keinen Wikipedia Eintrag
+
 
                                 #picturesstart.panel.panel-default
                                     .panel-heading
                                         a.text-muted(data-toggle='collapse' data-target='#collapse6')
                                             span.glyphicon.glyphicon-picture
-                                                |               Bilder zum Start
+                                                |               Bilder
                                     #collapse6.panel-body.panel-collapse.collapse.out
-                                           img(id='picstart' src='', alt='Das Bild aus der Datenbank sollte hier geladen sein' height="320px" width="42px")
+                                        .responsive
+                                            .gallery
+                                                a(target='_blank')
+                                                    img(id = 'pic1' src='', alt='Pic1', width='300', height='600')
 
-
-                                #picturesend.panel.panel-default
-                                    .panel-heading
-                                        a.text-muted(data-toggle='collapse' data-target='#collapse7')
-                                            span.glyphicon.glyphicon-picture
-                                                |               Bilder zum Ziel
-                                    #collapse7.panel-body.panel-collapse.collapse.out
-                                        img(id='picend' src='', alt='Das Bild aus der Datenbank sollte hier geladen sein' height="320px" width="42px")
-
+                                        .responsive
+                                            .gallery
+                                                a(target='_blank')
+                                                    img(id='pic2' src='', alt='You can load up to 4 pictures to be displayed here ', width='600', height='600')
+                                        .responsive
+                                            .gallery
+                                                a(target='_blank')
+                                                    img(id ='pic3' src='', alt='You can load up to 4 pictures to be displayed here ', width='600', height='600')
+                                        .responsive
+                                            .gallery
+                                                a(target='_blank')
+                                                    img(id ='pic4' src='', alt='You can load up to 4 pictures to be displayed here ', width='600', height='600')
+                                        .clearfix
 
 
 

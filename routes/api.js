@@ -95,8 +95,7 @@ router.post('/save/etappe/', function(req, res, next) {
         "Start":req.body.start,
         "Ende":req.body.end,
         "Website":req.body.website,
-        "StartBild":req.body.picstart,
-        "StartEnde":req.body.picende,
+        "Bilder":req.body.picstart,
         "route" : req.body.route
     }, function (err, doc) {
         if (err) {

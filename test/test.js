@@ -1,20 +1,21 @@
 /**
  * Geosoftware I, SoSe 2017, Abschlussaufgabe
- * @author Jens Seifert (408076)
+ * @author Eric Thieme-Garmann(429 603)
  */
 
 var assert;
 var requireFromUrl;
 var Leaflet;
+var bootstrap;
 var ajax;
 var log;
 var Geoc;
 var turf;
 var Leafletroute;
-var etappe;
-var marks;
-var route;
-var mylog;
+var Mongo;
+var routing;
+var init;
+var showExternal;
 var request;
 var expect;
 describe('The test', function() {
@@ -27,16 +28,16 @@ describe('The test', function() {
         $ = requireFromUrl('https://code.jquery.com/jquery-3.2.1.min.js');
         global.$ = $;
         assert = require('assert');
+        // bootstrap = require('../public/javascripts/imported/bootstrap-filestyle.min.js');
         Leaflet = requireFromUrl('https://unpkg.com/leaflet@1.0.3/dist/leaflet.js');
         ajax = requireFromUrl('https://code.jquery.com/jquery-3.2.1.min.js');
-        log = require('../public/javascripts/jsnlog.min.js');
-        Geoc = require('../public/javascripts/Control.Geocoder.js');
-        turf = require('../public/javascripts/turfnearest.min.js');
-        Leafletroute = require('../public/javascripts/leaflet-routing-machine.js');
-        //mylog = require('../public/javascripts/jsnlog.js');
-        etappe = require('../public/javascripts/etappe.js');
-        route = require('../public/javascripts/route.js');
-        marks = require('../public/javascripts/marks.js');
+        log = require('../public/javascripts/imported/jsnlog.min.js');
+        Geoc = require('../public/javascripts/imported/Control.Geocoder.js');
+        turf = require('../public/javascripts/imported/turf.min.js');
+        Leafletroute = require('../public/javascripts/imported/leaflet-routing-machine.js');
+        Mongo = require('../public/javascripts/Mongo.js');
+        init = require('../public/javascripts/init.js');
+        showExternal=require('../public/javascripts/showExternal.js');
         request = require("request");
         expect = require("chai").expect;
     });
@@ -53,12 +54,11 @@ describe('The test', function() {
         });
     });
 
-    describe("DB Test", function() {
-        var name = "dasdarfjawohlnichtwarsein";
-        var loadurl = "http://localhost:3000/api/load/object/"+name+"/";
-        var saveurl = "http://localhost:3000/api/save/object/"+name+"/";
-        var findurl = "http://localhost:3000/api/find/object/"+name+"/";
-        var delurl = "http://localhost:3000/api/del/object/"+name+"/";
+    describe("Datenbank Test", function() {
+        var name = "testtesttest";
+        var loadurl = "http://localhost:3000/api/load/etappe/"+name+"/";
+        var saveurl = "http://localhost:3000/api/save/etappe/"+name+"/";
+
 
         it("returns status 200, save to DB", function(done) {
             request(saveurl, function(error, response, body) {
