@@ -106,7 +106,6 @@ $(document).ready(function() {
 
 
           L.geoJSON(RouteToGeoJSON(route.route)).addTo(loadedEtappe);
-
           marker.bindPopup(popupcontent).openPopup();
           marker2.bindPopup(popupcontent);
 

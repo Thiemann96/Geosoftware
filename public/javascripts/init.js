@@ -21,12 +21,15 @@ function initMap() {
     var streets = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}\'', {id: 'MapID', attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'}),
         Normal   = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {id: 'MapID', attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
 
+    loadedMarkers.setZIndex(5);
+    Normal.setZIndex(6);
+
     routeSwitch = true;
     map = L.map('map', {
         center: [40.416775, -3.703790], // Centre of Spain 40.416775, -3.703790
-        zoom: 12,
+        zoom: 6,
         layers: [Normal, extras,alleMarker],
-        zoomControl: false
+        zoomControl: false,
     });
 
 
@@ -48,18 +51,19 @@ function initMap() {
 
     // Setup Routing Plugin
     routeControl = L.Routing.control({
-        serviceUrl: "http://10.67.60.199:5000/route/v1"   ,
+        serviceUrl: "http://10.67.60.199:5000/route/v1" ,
         waypoints: [
             null
         ],
         routeWhileDragging: false,
         show:true,
         position: 'topleft',
-        geocoder: L.Control.Geocoder.nominatim()
-    });
+        geocoder: L.Control.Geocoder.nominatim(),
+        createMarker: function() {return null}
+    }).addTo(map);
 
 
-    routeControl.addTo(map);
+
 
 
     /** Function in order for the hide & show Button for the routeControl
@@ -150,11 +154,8 @@ function initMap() {
                     '<input type="text" placeholder="https://www......" id="website" name="website" class="form-control"/>'+
                     '</div>'+
                     '<div class="form-group">'+
-                    '<label class="control-label col-sm-7"><strong>Bild zu Start: </strong></label>'+
+                    '<label class="control-label col-sm-7"><strong>Bilder zur Etappe: </strong></label>'+
                     '<input type="text" placeholder="https://www......" id="picstart" name="picstart" class="form-control"/>'+
-                    '</div>'+                    '<div class="form-group">'+
-                    '<label class="control-label col-sm-7"><strong>Bild zu Ende: </strong></label>'+
-                    '<input type="text" placeholder="https://www......" id="picende" name="picende" class="form-control"/>'+
                     '</div>'+
                     '<div class="form-group">'+
                     '<div style="text-align:center;" class="col-xs-4"><button type="submit" value="speichern" class="btn btn-success trigger-submit">Etappe speichern</button></div>'+              '</div>'+
@@ -462,7 +463,6 @@ function nextlot(){
     var zuschauer = new L.LatLng(markerlat,markerlng);
     var nextlot;
 
-
     var i;
     var shortest = 1000000000000000000000;
 
@@ -484,9 +484,10 @@ function nextlot(){
 
 
 
+    routeControl.addTo(map).setWaypoints([zuschauer,nextlot]);
     console.log("The next parking lot is at:     " + nextlot );
-    console.log(nextlot);
-    console.log(zuschauer);
+
+
 }
 
 

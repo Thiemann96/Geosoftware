@@ -51,13 +51,13 @@ html
             .col-md-12
                 h1 Web-App
                 p Geosoftware I, SoSe 2017, Abschlussabgabe
-                ul.nav.nav-tabs
-                    li(role='presentation')
-                        a(href='/') Start
+                ul.nav.nav-tabs.nav-justified
+                    li.text-muted(role='presentation')
+                        a.text-muted(href='/') Start
                     li.active(role='presentation')
-                        a(href='parkplaetze') Karte
+                        a.text-muted(href='parkplaetze') Karte
                     li(role='presentation')
-                        a(href='impressum') Impressum
+                        a.text-muted(href='impressum') Impressum
                 br
                 input.btn.btn-success(id='rcHide', type='submit', value='Hide route control')
                 input.btn.btn-success(id='rcShow', type='submit', value='Show route control')
@@ -130,13 +130,22 @@ html
                                         #wikie.wikipedia.p
                                             | Laden sie eine Etappe um den Wikipedia Eintrag zu laden
 
-                                #pictures.panel.panel-default
+                                #picturesstart.panel.panel-default
                                     .panel-heading
-                                        a.text-muted
+                                        a.text-muted(data-toggle='collapse' data-target='#collapse6')
                                             span.glyphicon.glyphicon-picture
-                                                |               Die Bilder der Etappe
-                                    .panel-body.panel-collapse.collapse.in
-                                           img(id='pic' src='', alt='Das Bild aus der Datenbank sollte hier geladen sein' height="320px" width="42px")
+                                                |               Bilder zum Start
+                                    #collapse6.panel-body.panel-collapse.collapse.out
+                                           img(id='picstart' src='', alt='Das Bild aus der Datenbank sollte hier geladen sein' height="320px" width="42px")
+
+
+                                #picturesend.panel.panel-default
+                                    .panel-heading
+                                        a.text-muted(data-toggle='collapse' data-target='#collapse7')
+                                            span.glyphicon.glyphicon-picture
+                                                |               Bilder zum Ziel
+                                    #collapse7.panel-body.panel-collapse.collapse.out
+                                        img(id='picend' src='', alt='Das Bild aus der Datenbank sollte hier geladen sein' height="320px" width="42px")
 
 
 

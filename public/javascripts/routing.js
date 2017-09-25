@@ -26,18 +26,7 @@ function RouteToGeoJSON(route){
             {
                 type: 'Feature',
                 properties: {
-                    id: 'waypoints',
-                    names: wpNames
-                },
-                geometry: {
-                    type: 'MultiPoint',
-                    coordinates: wpCoordinates
-                }
-            },
-            {
-                type: 'Feature',
-                properties: {
-                    id: 'line',
+                    id: 'line'
                 },
                 geometry: routeToLineString(route)
             }
