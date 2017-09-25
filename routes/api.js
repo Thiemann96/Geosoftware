@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var monk = require('monk');
-var db = monk('192.168.0.16:27017/neu');
+var db = monk('localhost:27017/neu');
 
 /**Load marker
  *
@@ -89,12 +89,11 @@ router.post('/save/etappe/', function(req, res, next) {
     var jsoncollection = db.get('jsoncollection');
     //res.setHeader('Content-type', 'application/json');
     // Submit to the DB
+    console.log(req.body.route);
     jsoncollection.insert({
         "Etappenname" : req.body.name,
         "Start":req.body.start,
-        "Startort":req.body.startort,
         "Ende":req.body.end,
-        "Zielort":req.body.zielort,
         "Website":req.body.website,
         "StartBild":req.body.picstart,
         "StartEnde":req.body.picende,

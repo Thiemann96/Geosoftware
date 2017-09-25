@@ -7,14 +7,17 @@
 'use strict';
 /**Global variables which are used throughout the app
  */
-var   city, markerlat,markerlng , zwischenspeicher, map, layercontrol, editableLayers, visualizationLayers, drawControl, routeControl, routeSwitch, currentRoute;
+var   city, markerlat,markerlng , zwischenspeicher, map, layercontrol,loadedEtappe,loadedMarkers, editableLayers, visualizationLayers, drawControl, routeControl, routeSwitch, currentRoute;
 var  parklots=[];
 
 
 function initMap() {
 
     var extras = L.layerGroup([]);
-
+    var alleMarker = L.layerGroup([]);
+    loadedEtappe = new L.FeatureGroup();
+    loadedMarkers = new L.FeatureGroup();
+    var tmp1 = new L.FeatureGroup();
     var streets = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}\'', {id: 'MapID', attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'}),
         Normal   = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {id: 'MapID', attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
 
@@ -22,11 +25,10 @@ function initMap() {
     map = L.map('map', {
         center: [40.416775, -3.703790], // Centre of Spain 40.416775, -3.703790
         zoom: 12,
-        layers: [Normal, extras],
+        layers: [Normal, extras,alleMarker],
         zoomControl: false
     });
 
-    visualizationLayers = new L.FeatureGroup();
 
     L.control.zoom({
         position: 'bottomleft'
@@ -37,7 +39,8 @@ function initMap() {
     };
 
     var overlayMaps = {
-        "Geladene Routen": extras
+        "Geladene Routen": extras,
+        "Parkplätze & Zuschauerplätze":alleMarker
     };
 
     // add layer control to map
@@ -45,7 +48,7 @@ function initMap() {
 
     // Setup Routing Plugin
     routeControl = L.Routing.control({
-        serviceUrl: "http://128.176.150.33:5000/route/v1",
+        serviceUrl: "http://10.67.60.199:5000/route/v1"   ,
         waypoints: [
             null
         ],
@@ -57,9 +60,6 @@ function initMap() {
 
 
     routeControl.addTo(map);
-
-
-
 
 
     /** Function in order for the hide & show Button for the routeControl
@@ -102,6 +102,8 @@ function initMap() {
     // Code taken from http://www.liedman.net/leaflet-routing-machine/tutorials/interaction/
     // slightly changed in order to only show up when a double click is performed
     map.on('click', function(e) {
+
+
         if (routeSwitch){
             var container = L.DomUtil.create('div'),
                 startBtn = createButton('Start from this location', container),
@@ -118,6 +120,15 @@ function initMap() {
 
             });
             L.DomEvent.on(destBtn, 'click', function() {
+
+
+                //Abfrage die erkennt ob vorherige Ziel Marker vorhanden ist
+
+                var popupEnde;
+                var popupStart;
+
+                map.removeLayer(tmp1);
+
 
                 var popupStartcontent = '<form  id="saveEtappe" action="/api/save/etappe/" method="POST">'+
                     '<div class="form-group">'+
@@ -160,22 +171,22 @@ function initMap() {
                 // Variables used to load the Wikipedia Entries for start and finish
                 var loadedEtappelat = waypoints[0].latLng.lat;
                 var loadedEtappelng = waypoints[0].latLng.lng;
-                var popupStart = L.marker(koordinatenStart).addTo(visualizationLayers);
-                var popupEnde = L.marker(koordinatenEnde).addTo(visualizationLayers);
+
+                 popupStart = L.marker(koordinatenStart).addTo(map);
+                 popupEnde = L.marker(koordinatenEnde).addTo(map);
+
+               // extras.addLayer(loadedEtappe);
+
                 popupStart.bindPopup(popupStartcontent).openPopup()
 
                 $('#saveEtappe').submit(function(e) {
                     e.preventDefault();
                     if (currentRoute){
+                        console.log(currentRoute);
                         // Append hidden field with actual GeoJSON structure
                         var inputRoute = $("<input type='hidden' name='route' value='" + JSON.stringify(currentRoute) + "'>");
                         $(this).append(inputRoute);
                         var that = this;
-                        console.dir(that.elements.name.value);
-                        console.dir(that.elements.start.value);
-                        console.dir(that.elements.end.value);
-                        console.dir(that.elements.picstart.value);
-
                         // submit via ajax
                         $.ajax({
                             data: $(that).serialize(),
@@ -212,7 +223,7 @@ function initMap() {
 
     });
 
-    routeControl.on('routesfound', function(e) {
+    routeControl.on('routeselected', function(e) {
         currentRoute = {};
         currentRoute.waypoints = routeControl.getWaypoints();
         currentRoute.route = e.route;
@@ -235,7 +246,7 @@ function initMap() {
     };
     // setup Leaflet.draw plugin
     // layer to draw on
-    visualizationLayers = new L.FeatureGroup();
+    loadedEtappe = new L.FeatureGroup();
     //map.addLayer(visualizationLayers);
 
     // add controls to map
@@ -280,7 +291,7 @@ function initMap() {
             layer = e.layer;
         //add the marker to a layer
         editableLayers.addLayer(layer);
-        var marker = L.marker(layer.getLatLng()).addTo(map);
+        var marker = L.marker(layer.getLatLng()).addTo(loadedMarkers);
 
 
         var popup = marker.bindPopup(popupContent).openPopup();
@@ -355,7 +366,9 @@ function initMap() {
 
     });
 
-    extras.addLayer(visualizationLayers);
+    alleMarker.addLayer(loadedMarkers);
+    extras.addLayer(loadedEtappe);
+
 }
 
 /** Modify the toolbar in order to show only one handle
@@ -474,7 +487,6 @@ function nextlot(){
     console.log("The next parking lot is at:     " + nextlot );
     console.log(nextlot);
     console.log(zuschauer);
-    console.log(routeControl.setWaypoints(zuschauer,nextlot))
 }
 
 

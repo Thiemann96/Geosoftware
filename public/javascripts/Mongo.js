@@ -15,8 +15,6 @@ $(document).ready(function() {
         // Prevent default html form handling
         e.preventDefault();
 
-
-
         var that = this;
 
         // submit via ajax
@@ -57,7 +55,7 @@ $(document).ready(function() {
                 var loadedMarkerlat =loadedMarker.features[0].geometry.coordinates[0];
                 var loadedMarkerlng = loadedMarker.features[0].geometry.coordinates[1];
 
-                L.geoJSON(loadedMarker).addTo(visualizationLayers).bindPopup((popupcontent)).openPopup();
+                L.geoJSON(loadedMarker).addTo(loadedMarkers).bindPopup((popupcontent)).openPopup();
 
 
                 console.log("Geometry '" + that.elements.name.value + "' successfully loaded.");
@@ -96,24 +94,21 @@ $(document).ready(function() {
       success: function(res) {
         var route = JSON.parse(res[0].route);
 
-          var marker = L.marker([route.waypoints[0].latLng.lat, route.waypoints[0].latLng.lng]).addTo(visualizationLayers);
-          var marker2 = L.marker([route.waypoints[1].latLng.lat, route.waypoints[1].latLng.lng]).addTo(visualizationLayers);
-
+          var marker = L.marker([route.waypoints[0].latLng.lat, route.waypoints[0].latLng.lng]).addTo(loadedEtappe);
+          var marker2 = L.marker([route.waypoints[1].latLng.lat, route.waypoints[1].latLng.lng]).addTo(loadedEtappe);
           var popupcontent = '<div class="form-group">' +'<label class="control-label col-sm-12 "><strong>Etappenname: </strong></label>' +
             '<label>'+ res[0].Etappenname + '</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong>Start: </strong></label>'
             + '<label>'+ res[0].Start +'</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Ende: </strong></label>'
             + '<label>'+ res[0].Ende +'</label>' + '</div>' + '<div class="form-group">' + '<label class="control-label col-sm-12"><strong> Website: </strong></label>'
             + '<label>'+ res[0].Website +'</label>' + '</div>'+'</div>';
 
-          routeControl.setWaypoints(route.waypoints);
-          console.dir(route.waypoints);
-          L.geoJSON(RouteToGeoJSON(route.route)).addTo(visualizationLayers);
+          //routeControl.setWaypoints(route.waypoints);
 
-          console.dir(          routeControl.setWaypoints(route.waypoints)
-      );
+
+          L.geoJSON(RouteToGeoJSON(route.route)).addTo(loadedEtappe);
+
           marker.bindPopup(popupcontent).openPopup();
-          marker2.bindPopup("Ziel");
-
+          marker2.bindPopup(popupcontent);
 
           getWiki(reverseGeocoding(route.waypoints[0].latLng.lat,route.waypoints[0].latLng.lng),'#wiki');
 
